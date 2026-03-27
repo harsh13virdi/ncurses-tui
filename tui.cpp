@@ -1,6 +1,4 @@
-#include <string>
 #include <stdlib.h>
-#include <stdio.h>
 #include <curses.h>
 #include "menu.h"
 
@@ -11,23 +9,35 @@ int main(int argc, char **argv){
     noecho();
     curs_set(0);
 
+    if(!has_colors())
+    {
+        return -1;
+    }
+
+    start_color();
+    init_pair(1, COLOR_WHITE,COLOR_BLUE);
+
     int yMax,xMax;
     getmaxyx(stdscr,yMax,xMax);
 
-    WINDOW *win = newwin(yMax/2,xMax/2,yMax/4,xMax/4);
+    WINDOW *win = newwin(yMax-1,xMax-1,yMax-yMax+1,xMax-xMax+1);
     box(win,0,0);
 
+    string menu1[] = {"New","Open","Save","Exit"};
+    string menu2[] = {"Copy","Cut","Paste"};
+    string menu3[] = {"Sidebar","Terminal"};
+
     Menu menus[3] = {
-        Menu("File",'f'),
-        Menu("Edit",'e'),
-        Menu("Options",'o'),
+        Menu("File",'f',menu1,4),
+        Menu("Edit",'e',menu2,3),
+        Menu("View",'v',menu3,2),
     };
 
     MenuBar menubar = MenuBar(win,menus,3);
     menubar.draw();
 
     char ch;
-    while(ch = wgetch(win)){
+    while((ch = wgetch(win))){
         menubar.handleTrigger(ch);
         menubar.draw();
     }
