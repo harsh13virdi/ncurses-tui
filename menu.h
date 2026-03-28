@@ -56,6 +56,26 @@ class MenuBar {
             }
         }
 
+        void resize(WINDOW *new_win)
+        {
+            delwin(menuwin);
+
+            this->win = new_win;
+
+            int yMax,xMax,yBeg,xBeg;
+            getmaxyx(win,yMax,xMax);
+            getbegyx(win,yBeg,xBeg);
+
+            menuwin = newwin(yMax-2,xMax-2,yBeg+1,xBeg+1);
+
+            int current_pos = 2;
+            for (int i = 0; i < num_menus; i++)
+            {
+                menus[i].start_x = current_pos;
+                current_pos += menus[i].text.length() + 1;
+            }
+        }
+
         void reset()
         {
             for (int i = 0; i < num_menus; i++)
