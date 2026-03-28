@@ -20,7 +20,7 @@ int main(int argc, char **argv){
     int yMax,xMax;
     getmaxyx(stdscr,yMax,xMax);
 
-    WINDOW *win = newwin(yMax-1,xMax-1,yMax-yMax+1,xMax-xMax+1);
+    WINDOW *win = newwin(9*(yMax)/10,9*(xMax)/10,1,1);
     box(win,0,0);
 
     string menu1[] = {"New","Open","Save","Exit"};
@@ -36,10 +36,22 @@ int main(int argc, char **argv){
     MenuBar menubar = MenuBar(win,menus,3);
     menubar.draw();
 
-    char ch;
+    keypad(win, TRUE);
+    int ch;
     while((ch = wgetch(win))){
-        menubar.handleTrigger(ch);
-        menubar.draw();
+        if(ch <= 255)
+        {
+            menubar.handleTrigger(ch);
+            menubar.draw();
+        }
+        else if(ch == KEY_RESIZE)
+        {
+            delwin(win);
+            getmaxyx(stdscr,yMax,xMax);
+            win = newwin(9*(yMax)/10,9*(xMax)/10,1,1);
+            box(win,0,0);
+            menubar.draw();
+        }
     }
 
     endwin();

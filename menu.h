@@ -6,7 +6,7 @@
 
 class Menu {
     public:
-        Menu(std::string text, char trigger, std::string *items, int num_items)
+        Menu(std::string text, int trigger, std::string *items, int num_items)
         {
             this->text = text;
             this->trigger = trigger;
@@ -16,7 +16,7 @@ class Menu {
         }
         int start_x;
         std::string text;
-        char trigger;
+        int trigger;
         std::string *items;
         int num_items;
         int selected_item;
@@ -99,10 +99,10 @@ class MenuBar {
                 {
                     switch(ch)
                     {
-                    case 'k':
+                    case 'j':
                         menu.selectNextItem();
                         break;
-                    case 'j':
+                    case 'k':
                         menu.selectPrevItem();
                         break;
                     default:
