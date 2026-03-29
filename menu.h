@@ -110,12 +110,14 @@ class MenuBar {
                 {
                     wattroff(win, A_STANDOUT);
                 }
+                if(!is_selected)
+                    return;
                 wrefresh(win);
 
                 char ch;
                 drawMenuItems(menu);
                 wrefresh(menuwin);
-                while(is_selected && (ch = wgetch(menuwin)))
+                while((ch = wgetch(menuwin)))
                 {
                     switch(ch)
                     {
@@ -126,13 +128,14 @@ class MenuBar {
                         menu.selectPrevItem();
                         break;
                     default:
-                        is_selected = false;
+                        werase(menuwin);
+                        wrefresh(menuwin);
+                        reset();
+                        return;
                     }
                     drawMenuItems(menu);
+                    wrefresh(menuwin);
                 }
-                werase(menuwin);
-                wrefresh(menuwin);
-                reset();
         }
 
         void drawMenuItems(Menu menu)

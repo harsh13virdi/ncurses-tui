@@ -23,17 +23,15 @@ int main(int argc, char **argv){
     WINDOW *win = newwin(yMax-1,xMax-1,1,1);
     box(win,0,0);
 
-    string menu1[] = {"New","Open","Save","Exit"};
-    string menu2[] = {"Copy","Cut","Paste"};
-    string menu3[] = {"Sidebar","Terminal"};
+    string menu1[] = {"Connect","Disconnect","Exit"};
+    string menu3[] = {"Info","Machines","Log"};
 
-    Menu menus[3] = {
-        Menu("File",'f',menu1,4),
-        Menu("Edit",'e',menu2,3),
-        Menu("View",'v',menu3,2),
+    Menu menus[2] = {
+        Menu("File",'f',menu1,3),
+        Menu("View",'v',menu3,3),
     };
 
-    MenuBar menubar = MenuBar(win,menus,3);
+    MenuBar menubar = MenuBar(win,menus,2);
     menubar.draw();
 
     keypad(win, TRUE);
@@ -61,5 +59,3 @@ int main(int argc, char **argv){
     endwin();
     return 0;
 }
-
-
