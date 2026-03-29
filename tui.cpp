@@ -17,42 +17,42 @@ int main(int argc, char **argv){
     start_color();
     init_pair(1, COLOR_WHITE,COLOR_BLUE);
 
-    int yMax,xMax;
-    getmaxyx(stdscr,yMax,xMax);
+    int term_yMax,term_xMax;
+    getmaxyx(stdscr,term_yMax,term_xMax);
 
-    WINDOW *win = newwin(yMax-1,xMax-1,1,1);
-    box(win,0,0);
+    WINDOW *main_win = newwin(term_yMax-1,term_xMax-1,1,1);
+    box(main_win,0,0);
 
-    string menu1[] = {"Connect","Disconnect","Exit"};
-    string menu3[] = {"Info","Machines","Log"};
+    string File_Menu[] = {"Connect","Disconnect","Exit"};
+    string View_Menu[] = {"Info","Machines","Log"};
 
-    Menu menus[2] = {
-        Menu("File",'f',menu1,3),
-        Menu("View",'v',menu3,3),
+    Menu main_menus[2] = {
+        Menu("File",'f',File_Menu,3),
+        Menu("View",'v',View_Menu,3),
     };
 
-    MenuBar menubar = MenuBar(win,menus,2);
-    menubar.draw();
+    MenuBar main_menubar = MenuBar(main_win,main_menus,2);
+    main_menubar.draw();
 
-    keypad(win, TRUE);
-    int ch;
-    while((ch = wgetch(win))){
-        if(ch <= 255)
+    keypad(main_win, TRUE);
+    int main_menus_input;
+    while((main_menus_input = wgetch(main_win))){
+        if(main_menus_input <= 255)
         {
-            menubar.handleTrigger(ch);
-            menubar.draw();
+            main_menubar.handleTrigger(main_menus_input);
+            main_menubar.draw();
         }
-        else if(ch == KEY_RESIZE)
+        else if(main_menus_input == KEY_RESIZE)
         {
             clear();
             refresh();
-            delwin(win);
-            getmaxyx(stdscr,yMax,xMax);
-            win = newwin(yMax-1,xMax-1,1,1);
-            box(win,0,0);
-            menubar.resize(win);
-            menubar.draw();
-            wrefresh(win);
+            delwin(main_win);
+            getmaxyx(stdscr,term_yMax,term_xMax);
+            main_win = newwin(term_yMax-1,term_xMax-1,1,1);
+            box(main_win,0,0);
+            main_menubar.resize(main_win);
+            main_menubar.draw();
+            wrefresh(main_win);
         }
     }
 
